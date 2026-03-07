@@ -1,5 +1,7 @@
 # browser-pilot
 
+**[한국어](./README.ko.md) | English**
+
 **An agent skill for AI-native development — letting your AI agent see, interact with, and iterate on live browser tabs and mobile WebViews as it writes code.**
 
 Instead of writing code blind, your agent can take a screenshot, catch console errors, inspect the DOM, and verify network calls — then fix the code and check again. A real development loop, not just code generation.
