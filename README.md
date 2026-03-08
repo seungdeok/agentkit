@@ -29,20 +29,20 @@ The agent handles the full loop: **see → diagnose → fix → verify.**
 
 ## Skills
 
-| Skill | Description |
-|-------|-------------|
+| Skill           | Description                                                |
+| --------------- | ---------------------------------------------------------- |
 | `browser-pilot` | AI-native dev loop using live browser & WebView inspection |
 
 ---
 
 ## Supported Platforms
 
-| Platform | Protocol | Requirement |
-|----------|----------|-------------|
-| Chrome (Desktop) | CDP over WebSocket | Launch Chrome with `--remote-debugging-port` |
-| Safari (macOS) | WebDriver / safaridriver | Xcode + "Allow Remote Automation" in Safari |
-| iOS Simulator WebView | CDP via ios-webkit-debug-proxy | `brew install ios-webkit-debug-proxy` |
-| Android WebView | CDP via ADB port forward | Android SDK + `WebView.setWebContentsDebuggingEnabled(true)` |
+| Platform              | Protocol                       | Requirement                                                  |
+| --------------------- | ------------------------------ | ------------------------------------------------------------ |
+| Chrome (Desktop)      | CDP over WebSocket             | Launch Chrome with `--remote-debugging-port`                 |
+| Safari (macOS)        | WebDriver / safaridriver       | Xcode + "Allow Remote Automation" in Safari                  |
+| iOS Simulator WebView | CDP via ios-webkit-debug-proxy | `brew install ios-webkit-debug-proxy`                        |
+| Android WebView       | CDP via ADB port forward       | Android SDK + `WebView.setWebContentsDebuggingEnabled(true)` |
 
 ---
 
@@ -50,17 +50,22 @@ The agent handles the full loop: **see → diagnose → fix → verify.**
 
 ```bash
 # Interactive (recommended)
-npx skills add your-username/browser-pilot
-
-# Specific agents
-npx skills add your-username/browser-pilot -a claude-code
-npx skills add your-username/browser-pilot -a cursor
-npx skills add your-username/browser-pilot -a opencode
-npx skills add your-username/browser-pilot -a codex
-
-# All agents, non-interactive
-npx skills add your-username/browser-pilot --all -y
+npx skills add seungdeok/browser-pilot
 ```
+
+### Claude Code
+
+```
+/plugin install browser-pilot@seungdeok
+```
+
+### Claude.ai
+
+Upload the skill manually through the Claude.ai interface. See [Using skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude#h_a4222fa77b) for instructions.
+
+### API
+
+See the [Skills API Quickstart](https://docs.claude.com/en/api/skills-guide#creating-a-skill) for instructions on uploading and using custom skills via the API.
 
 ---
 
@@ -78,7 +83,7 @@ npx skills add your-username/browser-pilot --all -y
 
 ---
 
-## Monorepo support
+## Multi-server support
 
 Works across multiple dev servers running on different ports:
 

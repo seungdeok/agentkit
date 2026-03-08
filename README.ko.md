@@ -29,38 +29,43 @@
 
 ## 스킬
 
-| 스킬 | 설명 |
-|------|------|
+| 스킬            | 설명                                                          |
+| --------------- | ------------------------------------------------------------- |
 | `browser-pilot` | 실시간 브라우저 & WebView 검사를 활용한 AI 네이티브 개발 루프 |
 
 ---
 
 ## 지원 플랫폼
 
-| 플랫폼 | 프로토콜 | 요구사항 |
-|--------|----------|----------|
-| Chrome (데스크탑) | CDP over WebSocket | `--remote-debugging-port` 옵션으로 Chrome 실행 |
-| Safari (macOS) | WebDriver / safaridriver | Xcode + Safari에서 "원격 자동화 허용" 활성화 |
-| iOS 시뮬레이터 WebView | CDP via ios-webkit-debug-proxy | `brew install ios-webkit-debug-proxy` |
-| Android WebView | CDP via ADB port forward | Android SDK + `WebView.setWebContentsDebuggingEnabled(true)` |
+| 플랫폼                 | 프로토콜                       | 요구사항                                                     |
+| ---------------------- | ------------------------------ | ------------------------------------------------------------ |
+| Chrome (데스크탑)      | CDP over WebSocket             | `--remote-debugging-port` 옵션으로 Chrome 실행               |
+| Safari (macOS)         | WebDriver / safaridriver       | Xcode + Safari에서 "원격 자동화 허용" 활성화                 |
+| iOS 시뮬레이터 WebView | CDP via ios-webkit-debug-proxy | `brew install ios-webkit-debug-proxy`                        |
+| Android WebView        | CDP via ADB port forward       | Android SDK + `WebView.setWebContentsDebuggingEnabled(true)` |
 
 ---
 
 ## 설치
 
 ```bash
-# 인터랙티브 설치 (권장)
-npx skills add your-username/browser-pilot
-
-# 특정 에이전트에 설치
-npx skills add your-username/browser-pilot -a claude-code
-npx skills add your-username/browser-pilot -a cursor
-npx skills add your-username/browser-pilot -a opencode
-npx skills add your-username/browser-pilot -a codex
-
-# 전체 에이전트에 비인터랙티브 설치
-npx skills add your-username/browser-pilot --all -y
+# Interactive (recommended)
+npx skills add seungdeok/browser-pilot
 ```
+
+### Claude Code
+
+```
+/plugin install browser-pilot@seungdeok
+```
+
+### Claude.ai
+
+Claude.ai 인터페이스에서 직접 업로드합니다. 자세한 방법은 [Claude에서 스킬 사용하기](https://support.claude.com/en/articles/12512180-using-skills-in-claude#h_a4222fa77b)를 참고하세요.
+
+### API
+
+API를 통한 커스텀 스킬 업로드 및 사용 방법은 [Skills API 퀵스타트](https://docs.claude.com/en/api/skills-guide#creating-a-skill)를 참고하세요.
 
 ---
 
@@ -78,7 +83,7 @@ npx skills add your-username/browser-pilot --all -y
 
 ---
 
-## 모노레포 지원
+## 멀티 서버 지원
 
 다른 포트에서 실행 중인 여러 개발 서버에서 동작합니다:
 
