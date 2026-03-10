@@ -56,16 +56,33 @@ done
 chrome_available=false
 if [ "$chrome_count" -gt 0 ]; then
   chrome_available=true
-  echo "  ✓ Chrome — $chrome_count tab(s)" >&2
+  echo "  ✓ Chrome — $chrome_count tab(s) (debug mode)" >&2
 else
-  echo "  · Chrome: not found (launch with --remote-debugging-port=PORT)" >&2
+  # Fallback: list open Chrome tabs via AppleScript (URL only, no debug access)
+  chrome_urls=$(osascript -e 'tell application "Google Chrome" to get URL of tabs of windows' 2>/dev/null || true)
+  if [ -n "$chrome_urls" ]; then
+    echo "  · Chrome: running but no debug port — listing tabs via AppleScript (read-only)" >&2
+    while IFS=', ' read -ra urls; do
+      for url in "${urls[@]}"; do
+        url=$(echo "$url" | xargs)
+        [ -z "$url" ] && continue
+        add_line "chrome-readonly	Chrome (no debug port)		$url	(no debug access — restart with --remote-debugging-port)	"
+        chrome_count=$((chrome_count + 1))
+      done
+    done <<< "$chrome_urls"
+    echo "  ✓ Chrome — $chrome_count tab(s) visible (read-only)" >&2
+  else
+    echo "  · Chrome: not found in debug mode" >&2
+    echo "    → To enable: open -a \"Google Chrome\" --args --remote-debugging-port=PORT" >&2
+  fi
 fi
 
 # ── Safari ────────────────────────────────────────────────────────
-# Safari doesn't expose a tab list via CDP — detect availability only.
+# CDP not available without Remote Automation. Falls back to AppleScript for URL listing.
 safari_driver=false safari_running=false safari_automation=false
 [ -f "/usr/bin/safaridriver" ] && safari_driver=true
-pgrep -x Safari >/dev/null 2>&1 && safari_running=true
+# pgrep covers both "Safari" and "Safari Technology Preview"
+pgrep -xi "safari|safari technology preview" >/dev/null 2>&1 && safari_running=true
 if $safari_driver; then
   echo "  ✓ safaridriver available" >&2
   if timeout 2 safaridriver --enable >/dev/null 2>&1; then
@@ -76,6 +93,22 @@ if $safari_driver; then
   fi
 else
   echo "  · safaridriver not found" >&2
+fi
+
+# Safari URL fallback via AppleScript
+safari_url_count=0
+safari_urls=$(osascript -e 'tell application "Safari" to get URL of tabs of windows' 2>/dev/null || true)
+if [ -n "$safari_urls" ] && ! $safari_automation; then
+  echo "  · Safari: listing tabs via AppleScript (read-only)" >&2
+  while IFS=', ' read -ra urls; do
+    for url in "${urls[@]}"; do
+      url=$(echo "$url" | xargs)
+      [ -z "$url" ] && continue
+      add_line "safari-readonly	Safari (no automation)		$url	(no debug access — enable Develop → Allow Remote Automation)	"
+      safari_url_count=$((safari_url_count + 1))
+    done
+  done <<< "$safari_urls"
+  echo "  ✓ Safari — $safari_url_count tab(s) visible (read-only)" >&2
 fi
 
 # ── iOS — auto-start proxy if needed, then scan ports 9221–9230 ───
@@ -93,7 +126,7 @@ for devs in json.load(sys.stdin).get('devices', {}).values():
 print('\n'.join(sims))
 " 2>/dev/null || true)
 
-  booted_count=$(echo "$booted" | grep -c '\S' 2>/dev/null || echo 0)
+  booted_count=$(echo "$booted" | grep -v '^\s*$' 2>/dev/null | wc -l | xargs)
   echo "  ✓ xcrun — $booted_count simulator(s) booted" >&2
 
   if [ "$booted_count" -gt 0 ] && which ios-webkit-debug-proxy >/dev/null 2>&1; then
@@ -167,7 +200,7 @@ next_android_port=9230
 
 if which adb >/dev/null 2>&1; then
   devices=$(adb devices 2>/dev/null | awk 'NR>1 && $2=="device"{print $1}')
-  dev_count=$(echo "$devices" | grep -c '\S' 2>/dev/null || echo 0)
+  dev_count=$(echo "$devices" | grep -v '^\s*$' 2>/dev/null | wc -l | xargs)
   echo "  ✓ ADB — $dev_count device(s)" >&2
 
   for dev in $devices; do

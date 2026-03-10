@@ -38,6 +38,7 @@ else:
 ```
 
 Example output:
+
 ```
 [1] chrome    http://localhost:3000/       (My App)   — Chrome (:9222)
 [2] chrome    http://localhost:3001/admin  (Admin)    — Chrome (:9222)
@@ -62,11 +63,13 @@ print(t['ws'] if t else '')
 User says: `"http://localhost:9223/json 연결해줘"` or `"ws://localhost:9222/devtools/page/ABC 붙어줘"`
 
 **If a WebSocket URL (`ws://...`) is given** — use it directly:
+
 ```bash
 WS="ws://localhost:9222/devtools/page/ABC123"
 ```
 
 **If an HTTP debug endpoint is given** — query it and show the list:
+
 ```bash
 ENDPOINT="http://localhost:9223"   # from user input
 # Try /json then /json/list (path varies by runtime)
@@ -93,6 +96,7 @@ print(t.get('webSocketDebuggerUrl',''))
 ## Step 1 — Detect Available Targets
 
 `detect-env.sh` handles everything automatically — no pre-setup needed:
+
 - **Chrome**: reads debug port from process args
 - **iOS**: starts `ios-webkit-debug-proxy` automatically if simulators are booted
 - **Android**: scans `/proc/net/unix` for all `devtools_remote` sockets on every connected device, assigns free local ports dynamically
@@ -183,11 +187,11 @@ Compare `snapshot.png` (before) vs `after-fix.png` (after). If the issue persist
 
 ### 환경별 추천 MCP
 
-| 환경 | MCP 패키지 |
-| ---- | ---------- |
-| Chrome / Chromium | `@modelcontextprotocol/server-puppeteer` |
-| 크로스브라우저 (Chrome · Firefox · Safari) | `@playwright/mcp` |
-| iOS / Android WebView | bash 스크립트 방식 사용 (아래 참고) |
+| 환경                                       | MCP 패키지                               |
+| ------------------------------------------ | ---------------------------------------- |
+| Chrome / Chromium                          | `@modelcontextprotocol/server-puppeteer` |
+| 크로스브라우저 (Chrome · Firefox · Safari) | `@playwright/mcp`                        |
+| iOS / Android WebView                      | bash 스크립트 방식 사용 (아래 참고)      |
 
 ### 설정 방법
 
@@ -257,12 +261,12 @@ bash "$SKILL_PATH/scripts/android-setup.sh"
 
 ## Quick Reference
 
-| Goal                            | Command                                                                                                                       |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Goal                            | Command                                                                                                                                 |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | List Chrome tabs by port        | `curl -s "http://localhost:$CHROME_PORT/json" \| python3 -c "import sys,json; [print(t['url'],t['id']) for t in json.load(sys.stdin)]"` |
-| Get WS URL for localhost:3001   | See `references/chrome.md` § "Filter by port"                                                                                 |
-| Check localStorage / auth token | See `references/chrome.md` § "Storage"                                                                                        |
-| iOS simulator not booted        | `xcrun simctl boot "iPhone 15 Pro" && open -a Simulator`                                                                      |
+| Get WS URL for localhost:3001   | See `references/chrome.md` § "Filter by port"                                                                                           |
+| Check localStorage / auth token | See `references/chrome.md` § "Storage"                                                                                                  |
+| iOS simulator not booted        | `xcrun simctl boot "iPhone 15 Pro" && open -a Simulator`                                                                                |
 
 ## Error Recovery
 
