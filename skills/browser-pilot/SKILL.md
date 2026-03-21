@@ -150,15 +150,6 @@ npx agent-browser --session app2 screenshot snapshot-3001.png
 
 ---
 
-## Reference
-
-| Browser | Reference              |
-| ------- | ---------------------- |
-| Chrome  | `references/chrome.md` |
-| Safari  | `references/safari.md` |
-
----
-
 ## Error Recovery
 
 | Error                          | Cause               | Fix                                     |
