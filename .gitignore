@@ -1,3 +1,12 @@
 .DS_Store
 .idea/
 .vscode/
+
+# Agents
+.claude/settings.local.json
+.omc/
+
+# Obsidian
+docs/.obsidian/workspace.json
+docs/.obsidian/workspace-mobile.json
+docs/.obsidian/.trash/
