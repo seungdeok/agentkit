@@ -1,6 +1,6 @@
 # Chrome — Dev Loop Reference
 
-> **`$CHROME_PORT`** is set in SKILL.md Step 1 via `detect-env.sh` — do not hardcode `9222`.
+> Connect to Chrome using `npx agent-browser --cdp $PORT` or `npx agent-browser --auto-connect`.
 
 ## 1. Start Chrome with Debug Port
 
@@ -15,13 +15,11 @@ curl -s "http://localhost:$CHROME_PORT/json/version" \
 ### Launch (macOS)
 
 ```bash
-# Launch with the same port detect-env found (or 9222 as default if starting fresh)
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
   --remote-debugging-port=${CHROME_PORT:-9222} \
   --user-data-dir=/tmp/chrome-devloop \
   --no-first-run --no-default-browser-check &
 sleep 2
-curl -s "http://localhost:${CHROME_PORT:-9222}/json/version" | python3 -c "import sys,json; print('✓', json.load(sys.stdin)['Browser'])"
 ```
 
 ### Launch (Linux)
@@ -35,123 +33,113 @@ google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-devloop &
 
 ---
 
-## 2. List Tabs & Get WS URL
+## 2. Connect and Navigate
 
 ```bash
-# All open page tabs
-curl -s http://localhost:$CHROME_PORT/json | python3 -c "
-import sys,json
-for t in json.load(sys.stdin):
-    if t.get('type')=='page':
-        print(t['url'])
-        print('  WS:', t.get('webSocketDebuggerUrl',''))
-"
+# Attach to existing Chrome tab
+npx agent-browser --cdp $CHROME_PORT open http://localhost:3000
+
+# Auto-discover running Chrome (no port needed)
+npx agent-browser --auto-connect open http://localhost:3000
 ```
 
 ### Filter by port (monorepo)
 
 ```bash
 PORT=3001
-WS=$(curl -s http://localhost:$CHROME_PORT/json | python3 -c "
-import sys,json
-tabs=json.load(sys.stdin)
-t=next((t for t in tabs if 'localhost:$PORT' in t.get('url','') or '127.0.0.1:$PORT' in t.get('url','')),None)
-print(t['webSocketDebuggerUrl'] if t else '')
-")
-[ -z "$WS" ] && echo "✗ No tab on localhost:$PORT" && exit 1
-echo "WS=$WS"
+npx agent-browser --cdp $CHROME_PORT open http://localhost:$PORT
 ```
 
 ---
 
-## 3. Console — Inject Collector + Read Logs
-
-Inject once per session (after attaching), then call the read command as many times as needed:
+## 3. Screenshot
 
 ```bash
-WS="ws://..."
+# Viewport screenshot
+npx agent-browser screenshot snapshot.png
 
+# Full-page screenshot
+npx agent-browser screenshot --full snapshot-full.png
+
+# Annotated (shows element refs overlaid)
+npx agent-browser screenshot --annotate snapshot-annotated.png
+```
+
+---
+
+## 4. Element Discovery
+
+```bash
+# Interactive elements with refs (@e1, @e2, ...)
+npx agent-browser snapshot -i
+
+# Include cursor-interactive divs
+npx agent-browser snapshot -i -C
+
+# Scope to a selector
+npx agent-browser snapshot -i -s "#root"
+```
+
+---
+
+## 5. Console — Inject Collector + Read Logs
+
+```bash
 # Inject collector
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Runtime.evaluate --params '{
-    "expression": "window.__devLoopLogs=[];[\"log\",\"warn\",\"error\"].forEach(l=>{const o=console[l];console[l]=(...a)=>{window.__devLoopLogs.push({level:l,msg:a.join(\" \"),t:Date.now()});o(...a)}});\"collector:ok\"",
-    "returnByValue":true}'
+npx agent-browser eval "window.__devLoopLogs=[];['log','warn','error'].forEach(l=>{const o=console[l];console[l]=(...a)=>{window.__devLoopLogs.push({level:l,msg:a.join(' '),t:Date.now()});o(...a)}});'collector:ok'"
 
 # Read logs
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Runtime.evaluate \
-  --params '{"expression":"JSON.stringify(window.__devLoopLogs)","returnByValue":true}' \
-  --extract result.value
+npx agent-browser eval "JSON.stringify(window.__devLoopLogs)"
 ```
 
 ---
 
-## 4. Network — Check API Calls
+## 6. Network — Check API Calls
 
 ```bash
-WS="ws://..."
+# Track HTTP requests
+npx agent-browser network requests
 
 # Test a specific endpoint inline
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Runtime.evaluate \
-  --params '{"expression":"fetch(\"/api/me\").then(r=>({status:r.status,ok:r.ok})).catch(e=>({error:e.message}))","returnByValue":true,"awaitPromise":true}' \
-  --extract result.value
+npx agent-browser eval "fetch('/api/me').then(r=>JSON.stringify({status:r.status,ok:r.ok})).catch(e=>JSON.stringify({error:e.message}))"
 
-# All resource timings (loaded assets + XHR)
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Runtime.evaluate \
-  --params '{"expression":"JSON.stringify(performance.getEntriesByType(\"resource\").slice(-20).map(e=>({url:e.name.split(\"/\").slice(-2).join(\"/\"),ms:Math.round(e.duration),status:e.responseStatus})))","returnByValue":true}' \
-  --extract result.value
+# Resource timings
+npx agent-browser eval "JSON.stringify(performance.getEntriesByType('resource').slice(-20).map(e=>({url:e.name.split('/').slice(-2).join('/'),ms:Math.round(e.duration),status:e.responseStatus})))"
 ```
 
 ---
 
-## 5. DOM & Interaction
+## 7. DOM & Interaction
 
 ```bash
-WS="ws://..."
-
 # Check element state
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Runtime.evaluate \
-  --params '{"expression":"(s=>{ const el=document.querySelector(s); return el?JSON.stringify({exists:true,visible:el.offsetParent!==null,text:el.textContent.trim().slice(0,100)}):JSON.stringify({exists:false}) })(\"#submit-btn\")","returnByValue":true}' \
-  --extract result.value
+npx agent-browser get text @e3
 
 # Click
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Runtime.evaluate \
-  --params '{"expression":"document.querySelector(\"button[type=submit]\").click()","returnByValue":true}'
+npx agent-browser click @e5
 
 # Fill input (fires React/Vue events)
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Runtime.evaluate \
-  --params '{"expression":"(el=>{el.value=\"user@example.com\";el.dispatchEvent(new Event(\"input\",{bubbles:true}));el.dispatchEvent(new Event(\"change\",{bubbles:true}))})(document.querySelector(\"input[type=email]\"))","returnByValue":true}'
+npx agent-browser fill @e2 "user@example.com"
 
 # Navigate to a route
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Page.navigate --params '{"url":"http://localhost:3001/dashboard"}'
+npx agent-browser goto http://localhost:3001/dashboard
+
+# Reload
+npx agent-browser eval "location.reload(true)"
 ```
 
 ---
 
-## 6. Storage & Auth
+## 8. Storage & Auth
 
 ```bash
-WS="ws://..."
-
 # Check auth token
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Runtime.evaluate \
-  --params '{"expression":"JSON.stringify({localStorage:localStorage.getItem(\"token\"),sessionStorage:sessionStorage.getItem(\"token\"),cookie:document.cookie.includes(\"token\")})","returnByValue":true}' \
-  --extract result.value
+npx agent-browser eval "JSON.stringify({localStorage:localStorage.getItem('token'),sessionStorage:sessionStorage.getItem('token'),cookie:document.cookie.includes('token')})"
 
 # Full localStorage
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Runtime.evaluate \
-  --params '{"expression":"JSON.stringify(Object.fromEntries(Object.entries(localStorage)))","returnByValue":true}' \
-  --extract result.value
+npx agent-browser eval "JSON.stringify(Object.fromEntries(Object.entries(localStorage)))"
 
-# Cookies
-node /mnt/skills/user/browser-pilot/scripts/cdp.js \
-  --ws "$WS" --method Network.getCookies --params '{}'
+# Save/restore session (for auth persistence)
+npx agent-browser state save ./auth.json
+npx agent-browser state load ./auth.json
 ```
