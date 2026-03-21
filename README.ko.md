@@ -37,10 +37,37 @@
 
 ## 지원 플랫폼
 
-| 플랫폼            | 프로토콜                             | 요구사항                                       |
-| ----------------- | ------------------------------------ | ---------------------------------------------- |
-| Chrome (데스크탑) | agent-browser --cdp / --auto-connect | `--remote-debugging-port` 옵션으로 Chrome 실행 |
-| Safari (macOS)    | agent-browser -p safari              | Xcode + Safari에서 "원격 자동화 허용" 활성화   |
+| 플랫폼                        | 플래그 / 프로토콜            | 환경변수                          | 요구사항                                        |
+| ----------------------------- | ---------------------------- | --------------------------------- | ----------------------------------------------- |
+| Chrome (데스크탑)             | `-p chrome` (기본값)         | `AGENT_BROWSER_PROVIDER=chrome`   | `--remote-debugging-port` 옵션으로 Chrome 실행  |
+| Safari (macOS)                | `-p safari`                  | `AGENT_BROWSER_PROVIDER=safari`   | Xcode + Safari에서 "원격 자동화 허용" 활성화    |
+| iOS 시뮬레이터 / 실제 기기    | `-p ios --device <name>`     | `AGENT_BROWSER_PROVIDER=ios`      | Xcode + iOS 시뮬레이터 또는 연결된 기기         |
+| Android 에뮬레이터 / 실제 기기 | `-p android --device <name>` | `AGENT_BROWSER_PROVIDER=android`  | Android SDK + `adb`                             |
+
+### 기기 선택
+
+```bash
+# iOS
+npx agent-browser -p ios --device "iPhone 16 Pro" open http://localhost:3000
+
+# Android
+npx agent-browser -p android --device "Pixel 8" open http://localhost:3000
+
+# 환경변수로 설정 (CI 환경에 유용)
+export AGENT_BROWSER_PROVIDER=ios
+export AGENT_BROWSER_IOS_DEVICE="iPhone 16 Pro"
+npx agent-browser open http://localhost:3000
+```
+
+### 세션
+
+`--session <name>`으로 작업별 격리된 브라우저 인스턴스를 실행합니다. 임시 상태로, 종료 시 초기화됩니다.
+
+```bash
+# 두 개의 격리된 인스턴스 병렬 실행
+npx agent-browser --session checkout open http://localhost:3000/checkout
+npx agent-browser --session admin open http://localhost:3001/admin
+```
 
 ---
 

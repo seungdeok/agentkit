@@ -37,10 +37,37 @@ The agent handles the full loop: **see → diagnose → fix → verify.**
 
 ## Supported Platforms
 
-| Platform         | Protocol                             | Requirement                                  |
-| ---------------- | ------------------------------------ | -------------------------------------------- |
-| Chrome (Desktop) | agent-browser --cdp / --auto-connect | Launch Chrome with `--remote-debugging-port` |
-| Safari (macOS)   | agent-browser -p safari              | Xcode + "Allow Remote Automation" in Safari  |
+| Platform                  | Flag / Protocol          | Env var                        | Requirement                                    |
+| ------------------------- | ------------------------ | ------------------------------ | ---------------------------------------------- |
+| Chrome (Desktop)          | `-p chrome` (default)    | `AGENT_BROWSER_PROVIDER=chrome`| Launch Chrome with `--remote-debugging-port`   |
+| Safari (macOS)            | `-p safari`              | `AGENT_BROWSER_PROVIDER=safari`| Xcode + "Allow Remote Automation" in Safari    |
+| iOS Simulator / Device    | `-p ios --device <name>` | `AGENT_BROWSER_PROVIDER=ios`   | Xcode + iOS Simulator or connected device      |
+| Android Emulator / Device | `-p android --device <name>` | `AGENT_BROWSER_PROVIDER=android` | Android SDK + `adb`                        |
+
+### Device selection
+
+```bash
+# iOS
+npx agent-browser -p ios --device "iPhone 16 Pro" open http://localhost:3000
+
+# Android
+npx agent-browser -p android --device "Pixel 8" open http://localhost:3000
+
+# Or via env vars (useful for CI)
+export AGENT_BROWSER_PROVIDER=ios
+export AGENT_BROWSER_IOS_DEVICE="iPhone 16 Pro"
+npx agent-browser open http://localhost:3000
+```
+
+### Sessions
+
+`--session <name>` runs an isolated browser instance per task — ephemeral, cleared on close.
+
+```bash
+# Two isolated instances running in parallel
+npx agent-browser --session checkout open http://localhost:3000/checkout
+npx agent-browser --session admin open http://localhost:3001/admin
+```
 
 ---
 

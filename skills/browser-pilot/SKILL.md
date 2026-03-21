@@ -9,8 +9,8 @@ description: >
   Korean triggers: "이거 고쳐줘", "왜 안되는거야", "콘솔 확인해줘", "스크린샷 찍어줘",
   "뭔가 깨진 것 같아", "수정한 거 제대로 됐는지 봐줘", "네트워크 요청 확인해줘", "DOM 봐줘".
   Do NOT wait for the user to explicitly ask — apply proactively on any live-UI task.
-argument-hint: "<url> [--safari]"
-compatibility: Requires Node.js (npx). macOS recommended for Safari support.
+argument-hint: "<url> [-p <provider>] [--device <name>] [--session <name>] [--profile <name>]"
+compatibility: Requires Node.js (npx). macOS required for Safari/iOS. Android SDK required for Android.
 license: MIT
 metadata:
   author: seungdeok
@@ -41,6 +41,44 @@ Use this skill proactively — not only when the user explicitly asks. Activate 
 
 ---
 
+## Providers & Devices
+
+| Provider | Flag | Env var | Requirement |
+|----------|------|---------|-------------|
+| Chrome (default) | `-p chrome` | `AGENT_BROWSER_PROVIDER=chrome` | Launch Chrome with `--remote-debugging-port` |
+| Safari (macOS) | `-p safari` | `AGENT_BROWSER_PROVIDER=safari` | Xcode + "Allow Remote Automation" in Safari |
+| iOS Simulator/Device | `-p ios` | `AGENT_BROWSER_PROVIDER=ios` | Xcode + iOS Simulator or connected device |
+| Android Emulator/Device | `-p android` | `AGENT_BROWSER_PROVIDER=android` | Android SDK + `adb` |
+
+Use `--device` (or `AGENT_BROWSER_IOS_DEVICE` / `AGENT_BROWSER_ANDROID_DEVICE`) to select a specific device:
+
+```bash
+# iOS Simulator
+npx agent-browser -p ios --device "iPhone 16 Pro" open http://localhost:3000
+
+# Android Emulator
+npx agent-browser -p android --device "Pixel 8" open http://localhost:3000
+
+# Set via env vars (useful for CI or persistent sessions)
+export AGENT_BROWSER_PROVIDER=ios
+export AGENT_BROWSER_IOS_DEVICE="iPhone 16 Pro"
+npx agent-browser open http://localhost:3000
+```
+
+---
+
+## Sessions
+
+`--session <name>` runs an isolated browser instance per task — ephemeral, cleared on close.
+
+```bash
+# Run two isolated instances side by side
+npx agent-browser --session checkout open http://localhost:3000/checkout
+npx agent-browser --session admin open http://localhost:3001/admin
+```
+
+---
+
 ## Step 1 — Open the URL
 
 ```bash
@@ -49,6 +87,12 @@ npx agent-browser open http://localhost:3000
 
 # Safari
 npx agent-browser -p safari open http://localhost:3000
+
+# iOS Simulator
+npx agent-browser -p ios --device "iPhone 16 Pro" open http://localhost:3000
+
+# Android Emulator
+npx agent-browser -p android --device "Pixel 8" open http://localhost:3000
 ```
 
 ---
