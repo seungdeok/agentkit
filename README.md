@@ -41,42 +41,25 @@ See [skills/browser-pilot/README.md](./skills/browser-pilot/README.md) for full 
 
 ## Install
 
-### Option 1: Marketplace (recommended)
+### Option 2: setup.sh (recommended for teams)
 
-**1. Add marketplace**
+Clone the repo and run the interactive setup script:
 
-```
-/plugin marketplace add seungdeok/claude-plugins
-```
-
-**2. Install skill**
-
-```
-/plugin marketplace install seungdeok@browser-pilot
+```bash
+git clone https://github.com/seungdeok/skills.git
+cd skills
+./setup.sh
 ```
 
-**3. Verify installation**
+The script will:
 
-```
-/plugin list
-```
+1. List available skills — select individual or all
+2. Choose install location:
+   - **Global** (`~/.claude/skills/`) — available in all projects
+   - **Project** (`./.claude/skills/`) — current project only
+3. Handle overwrites with confirmation prompt
 
-**4. Update**
-
-```
-/plugin update
-```
-
-**5. Remove**
-
-```
-/plugin remove {plugin_name}
-/plugin marketplace remove seungdeok
-```
-
-### Option 2: Manual
-
-Copy the skill to your Claude Code skills directory:
+### Option 3: Manual
 
 ```bash
 # Global (user-level)

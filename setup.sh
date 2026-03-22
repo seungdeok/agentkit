@@ -15,7 +15,7 @@ RESET="\033[0m"
 
 echo ""
 echo -e "${BOLD}╔══════════════════════════════════════╗${RESET}"
-echo -e "${BOLD}║         browser-pilot setup          ║${RESET}"
+echo -e "${BOLD}║         skills setup          ║${RESET}"
 echo -e "${BOLD}╚══════════════════════════════════════╝${RESET}"
 echo ""
 
