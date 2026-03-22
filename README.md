@@ -21,8 +21,9 @@ browser-pilot/
 
 | Skill                                        | Description                                                     | Install                                        |
 | -------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------- |
-| **[browser-pilot](./skills/browser-pilot/)** | AI-native dev loop using live browser tab inspection            | `cp -r skills/persona-pilot ~/.claude/skills/` |
+| **[browser-pilot](./skills/browser-pilot/)** | AI-native dev loop using live browser tab inspection            | `cp -r skills/browser-pilot ~/.claude/skills/` |
 | **[persona-pilot](./skills/persona-pilot/)** | Multi-agent user testing — drop a spec and get persona feedback | `cp -r skills/persona-pilot ~/.claude/skills/` |
+| **[bug-poilot](./skills/bug-poilot/)**       | Auto-fix bug issues from any GitHub repo and open a Draft PR   | `cp -r skills/bug-poilot ~/.claude/skills/`    |
 
 ---
 
@@ -49,6 +50,18 @@ parse target → generate personas → spawn agents → collect feedback → rep
 ```
 
 See [skills/persona-pilot/README.md](./skills/persona-pilot/README.md) for full documentation.
+
+---
+
+### [bug-poilot](./skills/bug-poilot/)
+
+Automated bug-fix skill. Point it at any GitHub repo — it finds an open bug issue with no PR, forks the repo, fixes the code, and opens a Draft PR.
+
+```
+find bug issue → fork & clone → analyze code → fix → commit → draft PR
+```
+
+See [skills/bug-poilot/README.md](./skills/bug-poilot/README.md) for full documentation.
 
 ---
 
