@@ -114,6 +114,8 @@ Once installed, the skill activates automatically when you mention a localhost U
 
 ```
 browser-pilot
+persona-pilot
+bug-poilot
 ```
 
 ---
