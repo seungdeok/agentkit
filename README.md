@@ -7,12 +7,19 @@ A collection of agent skills for AI-native development.
 ## Directory structure
 
 ```
-browser-pilot/
-└── skills/
-    └── browser-pilot/
-        ├── SKILL.md        # Skill definition (frontmatter + instructions)
-        ├── README.md       # Skill documentation
-        └── README.ko.md    # Korean documentation
+skills/
+├── browser-pilot/
+│   ├── SKILL.md        # Skill definition (frontmatter + instructions)
+│   ├── README.md       # English documentation
+│   └── README.ko.md    # Korean documentation
+├── persona-pilot/
+│   ├── SKILL.md
+│   ├── README.md
+│   └── README.ko.md
+└── bug-poilot/
+    ├── SKILL.md
+    ├── README.md
+    └── README.ko.md
 ```
 
 ---
@@ -23,7 +30,7 @@ browser-pilot/
 | -------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------- |
 | **[browser-pilot](./skills/browser-pilot/)** | AI-native dev loop using live browser tab inspection            | `cp -r skills/browser-pilot ~/.claude/skills/` |
 | **[persona-pilot](./skills/persona-pilot/)** | Multi-agent user testing — drop a spec and get persona feedback | `cp -r skills/persona-pilot ~/.claude/skills/` |
-| **[bug-poilot](./skills/bug-poilot/)**       | Auto-fix bug issues from any GitHub repo and open a Draft PR   | `cp -r skills/bug-poilot ~/.claude/skills/`    |
+| **[bug-poilot](./skills/bug-poilot/)**       | Auto-fix bug issues from any GitHub repo and open a Draft PR    | `cp -r skills/bug-poilot ~/.claude/skills/`    |
 
 ---
 
