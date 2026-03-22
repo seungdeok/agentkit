@@ -1,0 +1,70 @@
+{
+  "preset": "general",
+  "description": "General-purpose user personas covering a broad spectrum of users",
+  "personas": [
+    {
+      "id": "persona-beginner",
+      "name": "Alex",
+      "role": "First-time user",
+      "age": 24,
+      "tech_level": "low",
+      "goals": ["Understand what the product does", "Complete core task without help"],
+      "frustrations": ["Jargon and technical terms", "Too many steps", "No clear next action"],
+      "device": "mobile",
+      "test_focus": ["onboarding", "CTA clarity", "error messages"],
+      "questions": [
+        "Can I figure out what this does in under 30 seconds?",
+        "Is the first action I need to take obvious?",
+        "If I make a mistake, is the error message helpful?"
+      ]
+    },
+    {
+      "id": "persona-power-user",
+      "name": "Jordan",
+      "role": "Power user",
+      "age": 34,
+      "tech_level": "high",
+      "goals": ["Accomplish tasks efficiently", "Access advanced features", "Customize workflow"],
+      "frustrations": ["Too much hand-holding", "Missing keyboard shortcuts", "No advanced options"],
+      "device": "desktop",
+      "test_focus": ["efficiency", "advanced features", "customization"],
+      "questions": [
+        "Can I complete this task faster than 3 clicks?",
+        "Are there keyboard shortcuts or power-user features?",
+        "Is the documentation thorough enough for edge cases?"
+      ]
+    },
+    {
+      "id": "persona-mobile",
+      "name": "Sam",
+      "role": "Mobile-first user",
+      "age": 21,
+      "tech_level": "medium",
+      "goals": ["Get things done on the go", "Quick interactions", "Minimal typing"],
+      "frustrations": ["Tiny tap targets", "Forms too long", "Desktop-only features"],
+      "device": "mobile",
+      "test_focus": ["mobile layout", "touch targets", "form usability"],
+      "questions": [
+        "Are all buttons easy to tap with a thumb?",
+        "Does the layout work on a small screen without horizontal scrolling?",
+        "Can I complete the core task in under 2 minutes on mobile?"
+      ]
+    },
+    {
+      "id": "persona-accessibility",
+      "name": "Taylor",
+      "role": "User with accessibility needs",
+      "age": 45,
+      "tech_level": "medium",
+      "goals": ["Navigate with keyboard or screen reader", "Read content clearly"],
+      "frustrations": ["Low contrast text", "No alt text", "Keyboard traps", "Auto-playing media"],
+      "device": "desktop",
+      "test_focus": ["accessibility", "contrast", "keyboard navigation", "screen reader compatibility"],
+      "questions": [
+        "Can I navigate the entire flow using only a keyboard?",
+        "Is the color contrast sufficient for low-vision users?",
+        "Are images and icons labeled for screen readers?"
+      ]
+    }
+  ]
+}

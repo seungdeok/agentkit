@@ -19,9 +19,10 @@ browser-pilot/
 
 ## Quick Install
 
-| Skill                                        | Description                                          | Install                                               |
-| -------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- |
-| **[browser-pilot](./skills/browser-pilot/)** | AI-native dev loop using live browser tab inspection | `/plugin marketplace install browser-pilot@seungdeok` |
+| Skill                                        | Description                                                     | Install                                        |
+| -------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------- |
+| **[browser-pilot](./skills/browser-pilot/)** | AI-native dev loop using live browser tab inspection            | `cp -r skills/persona-pilot ~/.claude/skills/` |
+| **[persona-pilot](./skills/persona-pilot/)** | Multi-agent user testing — drop a spec and get persona feedback | `cp -r skills/persona-pilot ~/.claude/skills/` |
 
 ---
 
@@ -36,6 +37,18 @@ open url → observe → fix code → reload → verify → repeat
 ```
 
 See [skills/browser-pilot/README.md](./skills/browser-pilot/README.md) for full documentation.
+
+---
+
+### [persona-pilot](./skills/persona-pilot/)
+
+Multi-agent User Testing skill. Drop a product spec, URL, or API — personas are auto-generated, each agent tests from their perspective, and a structured feedback report is produced.
+
+```
+parse target → generate personas → spawn agents → collect feedback → report
+```
+
+See [skills/persona-pilot/README.md](./skills/persona-pilot/README.md) for full documentation.
 
 ---
 

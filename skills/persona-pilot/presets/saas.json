@@ -1,0 +1,70 @@
+{
+  "preset": "saas",
+  "description": "SaaS product personas — admin, developer, and end user",
+  "personas": [
+    {
+      "id": "persona-admin",
+      "name": "Rachel",
+      "role": "Team admin / buyer",
+      "age": 38,
+      "tech_level": "medium",
+      "goals": ["Evaluate ROI", "Set up team workspace", "Manage permissions and billing"],
+      "frustrations": ["Hidden pricing", "Complex onboarding for the whole team", "No audit logs"],
+      "device": "desktop",
+      "test_focus": ["admin panel", "billing", "team management", "security settings"],
+      "questions": [
+        "Is pricing transparent and easy to understand?",
+        "Can I invite team members and set roles without friction?",
+        "Is there a clear audit trail for team activity?"
+      ]
+    },
+    {
+      "id": "persona-developer",
+      "name": "Marcus",
+      "role": "Developer / integrator",
+      "age": 29,
+      "tech_level": "high",
+      "goals": ["Integrate via API", "Automate workflows", "Read clear technical docs"],
+      "frustrations": ["Vague API docs", "No SDK or code examples", "Rate limits not documented"],
+      "device": "desktop",
+      "test_focus": ["API docs", "SDK quality", "error responses", "webhooks"],
+      "questions": [
+        "Can I find and test the API in under 10 minutes?",
+        "Are error responses descriptive enough to debug without support?",
+        "Is there a sandbox or test environment?"
+      ]
+    },
+    {
+      "id": "persona-end-user",
+      "name": "Priya",
+      "role": "End user / daily worker",
+      "age": 31,
+      "tech_level": "low",
+      "goals": ["Complete daily tasks quickly", "Collaborate with team", "Not need training"],
+      "frustrations": ["UI changes without notice", "Too many notifications", "Slow performance"],
+      "device": "desktop",
+      "test_focus": ["core workflow", "collaboration", "notifications", "performance"],
+      "questions": [
+        "Can I complete my most common task in under 1 minute?",
+        "Is real-time collaboration intuitive?",
+        "Are notifications helpful or overwhelming?"
+      ]
+    },
+    {
+      "id": "persona-evaluator",
+      "name": "Chris",
+      "role": "Evaluator / decision maker",
+      "age": 45,
+      "tech_level": "low",
+      "goals": ["Understand product value quickly", "Compare against alternatives", "See security posture"],
+      "frustrations": ["No free trial", "Hard to find security/compliance info", "Too much sales friction"],
+      "device": "desktop",
+      "test_focus": ["landing page", "pricing page", "trust signals", "trial signup"],
+      "questions": [
+        "Is the value proposition clear on the homepage?",
+        "Can I start a free trial without talking to sales?",
+        "Is security and compliance information easy to find?"
+      ]
+    }
+  ]
+}
