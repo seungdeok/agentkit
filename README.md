@@ -41,7 +41,7 @@ See [skills/browser-pilot/README.md](./skills/browser-pilot/README.md) for full 
 
 ## Install
 
-### Option 2: setup.sh (recommended for teams)
+### Option 1: setup.sh (recommended for teams)
 
 Clone the repo and run the interactive setup script:
 
@@ -59,7 +59,7 @@ The script will:
    - **Project** (`./.claude/skills/`) — current project only
 3. Handle overwrites with confirmation prompt
 
-### Option 3: Manual
+### Option 2: Manual
 
 ```bash
 # Global (user-level)
