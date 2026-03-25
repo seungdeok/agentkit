@@ -1,4 +1,4 @@
-# skills
+# agentkit
 
 A collection of agent skills for AI-native development.
 
@@ -79,8 +79,8 @@ See [skills/bug-poilot/README.md](./skills/bug-poilot/README.md) for full docume
 Clone the repo and run the interactive setup script:
 
 ```bash
-git clone https://github.com/seungdeok/skills.git
-cd skills
+git clone https://github.com/seungdeok/agentkit.git
+cd agentkit
 ./setup.sh
 ```
 
