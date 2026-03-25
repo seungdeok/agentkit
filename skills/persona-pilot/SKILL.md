@@ -203,6 +203,11 @@ Read `.persona-pilot/report.md` and produce concrete improvement proposals → `
 ```markdown
 # Improvement Proposals
 
+> **Priority guide**
+> - **P0 — Critical**: Must fix before launch. Blocks core user flows or causes confusion for most users.
+> - **P1 — High Impact**: Important improvements that significantly enhance the experience.
+> - **P2 — Nice to Have**: Minor polish or enhancements for a better experience.
+
 ## P0 — Critical (fix before launch)
 
 ### [Issue title]
@@ -222,6 +227,61 @@ For each P0/P1 item:
 - **spec** → rewrite the relevant section
 - **web** → describe the UI/UX change
 - **api** → suggest endpoint or response changes
+
+After writing `improvements.md`, also produce `.persona-pilot/prd.md`:
+
+```markdown
+# Product Requirements Document (PRD)
+
+**Product:** <product name or target>
+**Date:** <date>
+**Based on:** Persona Pilot user testing — <N> personas
+
+---
+
+## Background
+
+<Why this product exists and what problem it solves. 2–3 sentences in plain language.>
+
+---
+
+## Goals
+
+- <What success looks like for users>
+- <What success looks like for the business>
+
+---
+
+## User Requirements
+
+Requirements identified from persona testing, written in plain language.
+
+| # | Requirement | Priority | Source personas |
+|---|-------------|----------|-----------------|
+| 1 | <What users need> | Must have / Should have / Nice to have | Sarah, Marcus |
+| 2 | ... | | |
+
+---
+
+## Success Metrics
+
+| Metric | Current | Target |
+|--------|---------|--------|
+| Average user satisfaction | <X>/5 | 4.0/5 |
+| <Other observable metric> | | |
+
+---
+
+## Out of Scope
+
+- <What is explicitly NOT included in this round of improvements>
+
+---
+
+## Open Questions
+
+- <Anything that needs a decision before work begins>
+```
 
 ---
 
@@ -247,6 +307,27 @@ Average rating: 3.2/5 — Key issue: onboarding flow is unclear for non-technica
 
 ## agent-browser Integration (web mode)
 
+### Installation
+
+The CLI uses Chrome/Chromium via CDP directly.
+
+```bash
+# Install
+npm i -g agent-browser
+# or
+brew install agent-browser
+# or
+cargo install agent-browser
+
+# Download Chrome
+agent-browser install
+
+# Update to latest version
+agent-browser upgrade
+```
+
+### Usage
+
 Each persona navigates the live app in an isolated session:
 
 ```bash
@@ -269,6 +350,7 @@ npx agent-browser --session <persona-id> close
 | `.persona-pilot/personas.json` | init | Persona definitions |
 | `.persona-pilot/report.md` | run | Aggregated feedback |
 | `.persona-pilot/improvements.md` | improve | Improvement proposals |
+| `.persona-pilot/prd.md` | improve | Product Requirements Document |
 | `.persona-pilot/<persona-id>/*.png` | run (web mode) | Screenshots per persona |
 
 ---

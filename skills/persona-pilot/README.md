@@ -139,6 +139,11 @@ After `/persona-pilot:improve`, proposals are saved to `.persona-pilot/improveme
 ```markdown
 # Improvement Proposals
 
+> **Priority guide**
+> - **P0 — Critical**: Must fix before launch. Blocks core user flows or causes confusion for most users.
+> - **P1 — High Impact**: Important improvements that significantly enhance the experience.
+> - **P2 — Nice to Have**: Minor polish or enhancements for a better experience.
+
 ## P0 — Critical
 
 ### Simplify onboarding terminology
@@ -146,6 +151,61 @@ Affected personas: Sarah, Marcus
 Problem: "API key provisioning" and "OAuth scope" appear in step 1 with no explanation.
 Proposed fix: Replace with plain-language alternatives + tooltip definitions.
 Expected impact: Reduce drop-off at step 1 by ~40%
+```
+
+---
+
+## PRD output
+
+After `/persona-pilot:improve`, a PRD is also saved to `.persona-pilot/prd.md`:
+
+```markdown
+# Product Requirements Document (PRD)
+
+**Product:** <product name or target>
+**Date:** <date>
+**Based on:** Persona Pilot user testing — <N> personas
+
+---
+
+## Background
+
+<Why this product exists and what problem it solves. 2–3 sentences in plain language.>
+
+---
+
+## Goals
+
+- <What success looks like for users>
+- <What success looks like for the business>
+
+---
+
+## User Requirements
+
+| # | Requirement | Priority | Source personas |
+|---|-------------|----------|-----------------|
+| 1 | <What users need> | Must have / Should have / Nice to have | Sarah, Marcus |
+
+---
+
+## Success Metrics
+
+| Metric | Current | Target |
+|--------|---------|--------|
+| Average user satisfaction | <X>/5 | 4.0/5 |
+
+---
+
+## Out of Scope
+
+- <What is explicitly NOT included in this round>
+
+---
+
+## Open Questions
+
+- <Anything that needs a decision before work begins>
 ```
 
 ---
@@ -173,6 +233,7 @@ Screenshots are saved per persona under `.persona-pilot/<persona-id>/`.
 ├── personas.json          # Persona definitions (created by init)
 ├── report.md              # Aggregated feedback (created by run)
 ├── improvements.md        # Improvement proposals (created by improve)
+├── prd.md                 # Product Requirements Document (created by improve)
 └── <persona-id>/
     ├── 01-landing.png     # Screenshots (web mode only)
     └── 02-after-click.png

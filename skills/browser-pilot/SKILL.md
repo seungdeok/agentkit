@@ -194,6 +194,27 @@ npx agent-browser --session app2 screenshot snapshot-3001.png
 
 ---
 
+## Installation
+
+The CLI uses Chrome/Chromium via CDP directly.
+
+```bash
+# Install
+npm i -g agent-browser
+# or
+brew install agent-browser
+# or
+cargo install agent-browser
+
+# Download Chrome
+agent-browser install
+
+# Update to latest version
+agent-browser upgrade
+```
+
+---
+
 ## Error Recovery
 
 | Error                          | Cause               | Fix                                     |
